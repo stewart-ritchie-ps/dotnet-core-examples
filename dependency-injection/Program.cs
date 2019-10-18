@@ -38,7 +38,6 @@ namespace dependency_injection
                     .GetService<Job>()
                     .Run();
 
-                //Console.WriteLine($"Hello {nameOption.Value()}");
                 Console.ResetColor();
 
                 return 0; 
