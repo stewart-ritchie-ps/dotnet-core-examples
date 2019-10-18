@@ -6,15 +6,12 @@ namespace dependency_injection
 {
     class Program
     {
-        private static readonly Startup Startup;
-
-        static Program()
-        {
-            Startup = new Startup();
-        }
+        // Bootstrap the application.
+        private static readonly Startup Startup = new Startup();
 
         static int Main(string[] args)
         {
+            // Create a CLI with support for a --name option.
             var app = new CommandLineApplication
             {
                 Name = "Dependency Injection Example"
@@ -26,6 +23,7 @@ namespace dependency_injection
 
             app.OnExecute(() => 
             { 
+                // If the user passed --name in the CLI, we override the default strategy.
                 if (nameOption.Value() != null)
                 {
                     Startup.WithName(nameOption.Value());
@@ -33,6 +31,7 @@ namespace dependency_injection
                 
                 Console.ForegroundColor = ConsoleColor.Green;
 
+                // Get a Job service and run it.
                 Startup
                     .Build()
                     .GetService<Job>()
@@ -45,6 +44,7 @@ namespace dependency_injection
 
             try
             {
+                // Run the application...
                 return app.Execute(args);
             }
             catch(CommandParsingException ex)
