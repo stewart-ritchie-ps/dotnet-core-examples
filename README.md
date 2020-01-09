@@ -1,3 +1,3 @@
-# dotnetcore3-examples
+# .Net Core Examples
 
 Some code examples
