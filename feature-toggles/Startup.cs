@@ -21,6 +21,7 @@ namespace Example
 
             Services = new ServiceCollection()
                 .Configure<Configuration>(Configuration.GetSection(nameof(Configuration)))
+                .AddOptions()
                 .AddSingleton<IEnumerable<Switch>>(_ =>
                 {
                     var config = _.GetService<IOptions<Configuration>>().Value;
@@ -31,8 +32,7 @@ namespace Example
                         Switches.From<SupportTopics>(config, "topics")
                     };
                 })
-                .AddSingleton<AllowTopicComments>()
-                .AddOptions();
+                .AddSingleton<AllowTopicComments>();
         }
 
         public ServiceProvider Build()
