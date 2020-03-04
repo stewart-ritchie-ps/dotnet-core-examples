@@ -1,12 +1,13 @@
 ﻿using Castle.DynamicProxy;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Example
 {
     public class RequestInterceptor : IInterceptor
     {
-        private static readonly Stopwatch stopwatch = new Stopwatch();
+        private readonly Stopwatch stopwatch = new Stopwatch();
 
         public void Intercept(IInvocation invocation)
         {
@@ -19,7 +20,18 @@ namespace Example
             switch (invocation.Method.Name)
             {
                 case "Get":
-                    stopwatch.Restart();
+                    stopwatch.Start();
+                    invocation.Proceed();
+
+                    ((Task)invocation.ReturnValue).ContinueWith(_ => {
+                        stopwatch.Stop();
+                        Console.WriteLine($"Get took {stopwatch.ElapsedMilliseconds} milliseconds");
+                    });
+                    
+                    break;
+                    
+                case "GetSync":
+                    stopwatch.Start();
                     invocation.Proceed();
                     stopwatch.Stop();
                     Console.WriteLine($"Get took {stopwatch.ElapsedMilliseconds} milliseconds");

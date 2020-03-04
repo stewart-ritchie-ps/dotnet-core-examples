@@ -18,5 +18,10 @@ namespace Example
         {
             Response = await http.GetStringAsync("https://jsonmonk.com/api/v1/users?page=1");
         }
+
+        public override void GetSync()
+        {
+            Response = http.GetStringAsync("https://jsonmonk.com/api/v1/users?page=1").GetAwaiter().GetResult();
+        }
     }
 }

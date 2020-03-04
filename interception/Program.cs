@@ -39,7 +39,13 @@ namespace Example
 
             Console.WriteLine("Running the intercepted requests...");
 
+            stopwatch.Restart();
             await Task.WhenAll(requests.Select(r => r.Get()));
+            stopwatch.Stop();
+
+            Console.WriteLine($"Total elapsed time for {requests.Length} asynchronous requests {stopwatch.ElapsedMilliseconds} milliseconds.");
+            
+            //requests.ToList().ForEach(_ => _.GetSync());
                        
             Console.WriteLine("Complete");
         }
